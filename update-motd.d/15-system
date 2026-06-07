@@ -51,7 +51,7 @@ label2="$(awk '{printf "%.1f°C", $1/1000}' /sys/class/thermal/thermal_zone0/tem
 label2="$(color $statsLabelColor "Temp") $(color $bulletColor "...")$(color $statsLabelColor ".") $(color $infoColor $label2)"
 
 uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
-uptime="$uptime $(color $dimInfoColor "* $(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%m-%d-%y %H:%M")")"
+uptime="$uptime $(color $dimInfoColor "* $(date -d "@"$(grep btime /proc/stat | cut -d " " -f 2) +"%F %H:%M")")"
 
 label3="$uptime"
 label3="$(color $statsLabelColor "Uptime") $(color $bulletColor "..")$(color $statsLabelColor ".") $(color $infoColor "$label3")"
@@ -59,13 +59,13 @@ label3="$(color $statsLabelColor "Uptime") $(color $bulletColor "..")$(color $st
 label4="$(awk -v a="$(awk '/cpu /{print $2+$3+$4+$5+$6+$7+$8+$9+$10,$5}' /proc/stat; sleep 0.3)" '/cpu /{split(a,b," "); printf "%.1f%%", 100*(($2+$3+$4+$5+$6+$7+$8+$9+$10-b[1])-($5-b[2]))/($2+$3+$4+$5+$6+$7+$8+$9+$10-b[1])}' /proc/stat)"
 label4="$(color $statsLabelColor "Cpu") $(color $bulletColor "....")$(color $statsLabelColor ".") $(color $infoColor $label4)"
 
-label5="$(df -h ~ | awk 'NR==2 { printf "%sB / %sB \\e[38;5;144m* Free: %sB\\e[0m",$3,$2,$4; }')"
+label5="$(df -h ~ | awk 'NR==2 { printf "%sB / %sB \\033[0m* Free: \\033[38;5;144m%sB",$3,$2,$4; }')"
 label5="$(color $statsLabelColor "Disk") $(color $bulletColor "....")$(color $statsLabelColor ".") $(color $infoColor "$label5")"
 
 label6="$(/bin/ls -d /proc/[0-9]* | wc -l)"
 label6="$(color $statsLabelColor "Procs") $(color $bulletColor "..")$(color $statsLabelColor ".") $(color $infoColor $label6)"
 
-label7="$(free -h --si | awk 'NR==2 { printf "%sB / %sB \\e[38;5;144m* Free: %sB\\e[0m",$3,$2,$4; }')"
+label7="$(free -h --si | awk 'NR==2 { printf "%sB / %sB \\033[0m* Free: \\033[38;5;144m%.1fGB", $3, $2, ($7)}')"
 label7="$(color $statsLabelColor "Memory") $(color $bulletColor "..")$(color $statsLabelColor ".") $(color $infoColor "$label7")"
 
 label8="$(hostname -I)"
@@ -78,3 +78,4 @@ echo -e "                                                         $label2\r   $l
 echo -e "                                                         $label4\r   $label3"
 echo -e "                                                         $label6\r   $label5"
 echo -e "                                                         $label8\r   $label7"
+echo
