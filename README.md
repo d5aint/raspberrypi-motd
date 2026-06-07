@@ -36,7 +36,18 @@ The process used for the motd is the same as RaspiOS or Ubuntu uses to show the 
 > |:-----------------------|:----------------------------|
 > |`Raspberry Pi 4 Model B`|`raspios-bookworm-arm64-lite`|
 #
-### Steps
+### Installation
+#### ❯ Quick Install
+The easiest way to install is using the provided `install.sh` script. It automates all the manual steps described below.
+
+```bash
+git clone https://github.com/ar51an/raspberrypi-motd.git
+cd raspberrypi-motd
+sudo ./install.sh
+```
+
+#
+### Manual Installation
 #### ❯ Remove Default MOTD
 
 * Delete `/etc/motd`. This file contains the static text about Debian GNU/Linux liability. Alternatively you can keep a backup of this file at some place.
@@ -53,7 +64,7 @@ The process used for the motd is the same as RaspiOS or Ubuntu uses to show the 
 
 #
 > **_NOTE:_**  
-> Default motd is completely removed. Reconnect ssh session and if you followed the steps correctly you will not see any motd.  
+> Default motd is completely removed. Reconnect ssh session and if you followed the instructions correctly you will not see any motd.  
 #
 
 #### ❯ Implement New MOTD
@@ -91,7 +102,7 @@ Make sure scripts are under the ownership of root and are executable.
 
 #
 > **_NOTE:_**  
-> New motd is implemented, pending few automations. Let's test new motd to verify that everything is working properly. **Either** reconnect ssh session **or** run the new motd from the same shell. If steps were followed correctly you will see new motd, something similar to the preview.  
+> New motd is implemented, pending few automations. Let's test new motd to verify that everything is working properly. **Either** reconnect ssh session **or** run the new motd from the same shell. If instructions were followed correctly you will see new motd, something similar to the preview.
 > > **Run motd from the same shell:**  
 > > `sudo run-parts /etc/update-motd.d`
 #
