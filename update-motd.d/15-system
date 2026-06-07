@@ -35,7 +35,7 @@ dimInfoColor="38;5;7;2"
 me=$(logname)
 
 # Last Login
-read loginIP loginDate <<< $(last $me --time-format iso -2 | awk 'NR==1 { print $3,$4 }')
+read -r loginIP loginDate <<< "$(last "$me" --time-format iso -2 2>/dev/null | awk 'NR==1 { print $3,$4 }')"
 if [[ $loginDate == *T* ]]; then
   login="$(date -d $loginDate +"%a %b %d %Y, %I:%M %p") $(color $dimInfoColor "* $loginIP")"
 else
@@ -47,7 +47,7 @@ fi
 label1="$login"
 label1="$(color $statsLabelColor "Last") $(color $bulletColor "....")$(color $statsLabelColor ".") $(color $infoColor "$label1")"
 
-label2="$(vcgencmd measure_temp | cut -c "6-9")°C"
+label2="$(awk '{printf "%.1f°C", $1/1000}' /sys/class/thermal/thermal_zone0/temp)"
 label2="$(color $statsLabelColor "Temp") $(color $bulletColor "...")$(color $statsLabelColor ".") $(color $infoColor $label2)"
 
 uptime="$(sec2time $(cut -d "." -f 1 /proc/uptime))"
